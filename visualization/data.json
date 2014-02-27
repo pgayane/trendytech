@@ -1,0 +1,197 @@
+{
+"languages":[
+	
+	{
+	"name": "Javascript",
+	"nor": [11, 50000]
+	},
+	{
+	"name": "Ruby",
+	"nor": [514856, 232]
+	},
+	{
+	"name": "Python",
+	"nor": [324435, 121222]
+	},
+	{
+	"name": "Shell",
+	"nor": [96634, 34000]
+	},
+	{
+	"name": "Java",
+	"nor": [460543, 879]
+	},
+  	{
+	"name": "PHP",
+	"nor":	[320836, 213123]
+	},
+	{
+	"name": "C",
+	"nor": [169719, 17989]
+	},
+	{
+	"name": "Perl",
+	"nor": [72812, 27312]
+	},
+	{
+	"name": "C++",
+	"nor": [165914, 34234]
+	},
+	{
+	"name": "Objective C",
+	"nor": [186881, 2342]
+	},
+	{
+	"name": "C#",
+	"nor": [110826, 123123]
+	},
+	{
+	"name": "Coffeescript",
+	"nor": [24000, 121231]
+	},
+	{
+	"name": "VimL",
+	"nor": [44188, 12312]
+	},
+	{
+	"name": "Emacs Lisp",
+	"nor": [463, 123123]
+	},
+	{
+	"name": "ASP",
+	"nor": [3454, 123123]
+	},
+	{
+	"name": "Haskell",
+	"nor": [20304, 111]
+	},
+	{
+	"name": "Scala",
+	"nor": [24748, 121333]
+	},
+	{
+	"name": "Actionscript",
+	"nor": [13154, 6463]
+	},
+	{
+	"name": "Assembly",
+	"nor": [4495, 2124]
+	},
+	{
+	"name": "Lua",
+	"nor": [15709, 463463]
+	},
+	{
+	"name": "Clojure",
+	"nor": [16794, 524656]
+	},
+	{
+	"name": "Groovy",
+	"nor": [11040, 42646]
+	},
+	{
+	"name": "Prolog",
+	"nor": [1970, 426556]
+	},
+	{
+	"name": "Erlang",
+	"nor": [8765, 904980]
+	},
+	{
+	"name": "D",
+	"nor": [3684, 25625]
+	},
+	{
+	"name": "R",
+	"nor": [13391, 426246]
+	},
+	{
+	"name": "Common Lisp",
+	"nor": [5470, 14545]
+	},
+	{
+	"name": "Rust",
+	"nor": [1238, 145345]
+	},
+	{
+	"name": "Scheme",
+	"nor": [4030, 626544]
+	},
+	{
+	"name": "Visual Basic",
+	"nor": [28011, 9089]
+	},
+	{
+	"name": "Go",
+	"nor": [22901, 357357]
+	},
+	{
+	"name": "Matlab",
+	"nor": [9665, 56256]
+	},
+	{
+	"name": "Tcl",
+	"nor": [1249, 68468]
+	},
+	{
+	"name": "SuperCollider",
+	"nor": [564, 562546]
+	},
+	{
+	"name": "OCaml",
+	"nor": [3333, 35727]
+	},
+	{
+	"name": "Fortran",
+	"nor": [2188, 2352]
+	},
+	{
+	"name": "ColdFusion",
+	"nor": [1712, 562]
+	},
+	{
+	"name": "Puppet",
+	"nor": [8676, 2626]
+	},
+	{
+	"name": "Arduino",
+	"nor": [9966, 67367]
+	},
+	{
+	"name": "F#",
+	"nor": [1808, 53563]
+	},
+	{
+	"name": "Smalltalk",
+	"nor": [430, 263463]
+	},
+	{
+	"name": "Verilog",
+	"nor": [1561, 785685]
+	},
+	{
+	"name": "HaXe",
+	"nor": [1734, 637657]
+	},
+	{
+	"name": "Racket",
+	"nor": [2329, 35635]
+	},
+	{
+	"name": "VHDL",
+	"nor": [1593, 35656]
+	},
+	{
+	"name": "PowerShell",
+	"nor": [3008, 39502]
+	},
+	{
+	"name": "Scilab",
+	"nor": [221, 56920]
+	},
+	{
+	"name": "Objective-J",
+	"nor": [416, 39402]
+	}
+]
+}
