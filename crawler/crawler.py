@@ -1,11 +1,15 @@
 
 from collections import deque
 from settings import myauth
+from settings import zipfile
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from repository import Repository
 import requests
 import time
+import gzip
+import json
+import logging
 
 
 #  ''' this function queries and returns github repos by languages used '''
@@ -69,17 +73,23 @@ def printSizePerLanguage():
       
     statf.close()
 
-
-def getAllRepos():
+def getSession():
     engine = create_engine('postgresql://pgayane:g@localhost:5433/githubDB')
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    p = {'since': 17243622}
+    return session
+
+def getAllRepos():
+    
+    session = getSession()
+
+    p = {'since': 17262486}
     result = requests.get('https://api.github.com/repositories', params=p, auth=myauth).json()
     l = len(result)
-    
     counter = 1
+    print counter, l, p['since']
+
     start_time = time.time()
     while l > 0:
         if counter % 5000 == 0:
@@ -102,14 +112,58 @@ def getAllRepos():
                 print proj
                 
         p['since'] = result[-1]['id']
-        result = requests.get('https://api.github.com/repositories', params=p, auth=myauth).json()
-        l = len(result)
+        while l == 0:
+            result = requests.get('https://api.github.com/repositories', params=p, auth=myauth)
+        l = len(result.json())
         counter += 1
-        print counter
+        print counter, l, p['since']
+
+        if l == 0:
+            print result
+
+        result = result.json()
 
         session.commit()
     
 
+def getLocally():
+
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    file_handler = logging.FileHandler('mergehistory.log')
+    logger.addHandler(file_handler)
+    
+   
+    session = getSession()
+
+    with gzip.open(zipfile,"rb") as input_file:
+
+        for line in input_file:
+            try:
+                user_repositories = json.loads(line)
+
+                for repo in user_repositories:
+                    if "created_at" in repo and repo["created_at"]:
+                        year = repo["created_at"][:4]
+                        is_success = Repository.update(session, repo['id'], creation_date = year, main_lang = repo['language'])
+
+                        if is_success:
+                            logger.info('%d %s %s' %(repo['id'] , year , repo['language']))
+                        else:
+                            logger.warning(str(repo['id']) +' update was unsuccessful')
+
+                    else:
+                        print repo
+                logger.info('user repos updated')
+                session.commit()
+                file_handler.flush()
+                print 'commits and flush to log file'
+            except:
+                logging.shutdown()
+                print "Failed to load:"
+                # print line
+                break
+
 
 if __name__ == '__main__':
-    getAllRepos()
+    getLocally()
