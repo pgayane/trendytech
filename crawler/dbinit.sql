@@ -13,3 +13,5 @@ CREATE TABLE languages(
     lang VARCHAR,
     lines INTEGER
 );
+
+CREATE UNIQUE INDEX id_idx ON repository(id);
