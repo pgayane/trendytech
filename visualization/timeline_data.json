@@ -1,0 +1,411 @@
+{
+    "languages": [
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0.12
+            ], 
+            "name": "TypeScript"
+        }, 
+        {
+            "lang_popularity": [
+                2.78, 
+                5.09, 
+                8.07, 
+                10.94, 
+                11.91, 
+                11.86
+            ], 
+            "name": "Java"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0, 
+                0, 
+                0.18, 
+                0.2
+            ], 
+            "name": "Arduino"
+        }, 
+        {
+            "lang_popularity": [
+                1.35, 
+                2.01, 
+                1.54, 
+                0.65, 
+                0.47, 
+                0.38
+            ], 
+            "name": "Emacs Lisp"
+        }, 
+        {
+            "lang_popularity": [
+                12.19, 
+                12.7, 
+                15.71, 
+                18.53, 
+                23.56, 
+                25.65
+            ], 
+            "name": "JavaScript"
+        }, 
+        {
+            "lang_popularity": [
+                1.16, 
+                1.21, 
+                2.96, 
+                1.63, 
+                1.23, 
+                0.99
+            ], 
+            "name": "VimL"
+        }, 
+        {
+            "lang_popularity": [
+                3.29, 
+                6.12, 
+                3.43, 
+                2.07, 
+                1.34, 
+                0.97
+            ], 
+            "name": "Perl"
+        }, 
+        {
+            "lang_popularity": [
+                0.73, 
+                0.68, 
+                0.56, 
+                0.42, 
+                0.36, 
+                0.34
+            ], 
+            "name": "Lua"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0, 
+                0.12, 
+                0.15, 
+                0.18
+            ], 
+            "name": "Matlab"
+        }, 
+        {
+            "lang_popularity": [
+                0.97, 
+                0.95, 
+                0.73, 
+                0.55, 
+                0.43, 
+                0.33
+            ], 
+            "name": "Erlang"
+        }, 
+        {
+            "lang_popularity": [
+                0.11, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ], 
+            "name": "Nu"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0.11, 
+                0.1, 
+                0, 
+                0, 
+                0
+            ], 
+            "name": "Objective-J"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0, 
+                0, 
+                0.11, 
+                0
+            ], 
+            "name": "Assembly"
+        }, 
+        {
+            "lang_popularity": [
+                0.69, 
+                1.85, 
+                2.38, 
+                2.49, 
+                2.8, 
+                2.62
+            ], 
+            "name": "C#"
+        }, 
+        {
+            "lang_popularity": [
+                0.24, 
+                0.7, 
+                0.84, 
+                0.86, 
+                0.77, 
+                0.79
+            ], 
+            "name": "Scala"
+        }, 
+        {
+            "lang_popularity": [
+                0.33, 
+                0.46, 
+                0.38, 
+                0.21, 
+                0.14, 
+                0
+            ], 
+            "name": "Common Lisp"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0, 
+                0.62, 
+                0.85, 
+                0.93
+            ], 
+            "name": "CoffeeScript"
+        }, 
+        {
+            "lang_popularity": [
+                52.34, 
+                34.45, 
+                24.65, 
+                20.11, 
+                15.46, 
+                11.86
+            ], 
+            "name": "Ruby"
+        }, 
+        {
+            "lang_popularity": [
+                0.15, 
+                0.26, 
+                0.38, 
+                0.37, 
+                0.35, 
+                0.26
+            ], 
+            "name": "Groovy"
+        }, 
+        {
+            "lang_popularity": [
+                4.52, 
+                5.35, 
+                5.98, 
+                5.69, 
+                5.12, 
+                4.82
+            ], 
+            "name": "C"
+        }, 
+        {
+            "lang_popularity": [
+                3.35, 
+                3.76, 
+                3.73, 
+                4.13, 
+                4.19, 
+                4.0
+            ], 
+            "name": "C++"
+        }, 
+        {
+            "lang_popularity": [
+                1.48, 
+                2.72, 
+                2.89, 
+                3.74, 
+                4.82, 
+                4.83
+            ], 
+            "name": "Objective-C"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0.13, 
+                0.17, 
+                0.23, 
+                0.27
+            ], 
+            "name": "R"
+        }, 
+        {
+            "lang_popularity": [
+                0.21, 
+                0.61, 
+                0.81, 
+                0.65, 
+                0.56, 
+                0.47
+            ], 
+            "name": "Clojure"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0.11, 
+                0.13, 
+                0.21, 
+                0.41, 
+                2.93
+            ], 
+            "name": "CSS"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0.12, 
+                0.11, 
+                0, 
+                0
+            ], 
+            "name": "ColdFusion"
+        }, 
+        {
+            "lang_popularity": [
+                0.12, 
+                0.15, 
+                0.14, 
+                0.11, 
+                0, 
+                0
+            ], 
+            "name": "OCaml"
+        }, 
+        {
+            "lang_popularity": [
+                7.0, 
+                10.23, 
+                10.87, 
+                10.93, 
+                9.73, 
+                9.54
+            ], 
+            "name": "Python"
+        }, 
+        {
+            "lang_popularity": [
+                0.57, 
+                0.84, 
+                0.74, 
+                0.66, 
+                0.49, 
+                0.4
+            ], 
+            "name": "Haskell"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0, 
+                0, 
+                0.3, 
+                0.4
+            ], 
+            "name": "Puppet"
+        }, 
+        {
+            "lang_popularity": [
+                1.37, 
+                1.75, 
+                2.02, 
+                2.62, 
+                2.6, 
+                2.69
+            ], 
+            "name": "Shell"
+        }, 
+        {
+            "lang_popularity": [
+                0.52, 
+                0.88, 
+                0.91, 
+                0.63, 
+                0.45, 
+                0.32
+            ], 
+            "name": "ActionScript"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0.1, 
+                0.21, 
+                0.27, 
+                0.45, 
+                0.9
+            ], 
+            "name": "Go"
+        }, 
+        {
+            "lang_popularity": [
+                0, 
+                0, 
+                0.12, 
+                0, 
+                0, 
+                0
+            ], 
+            "name": "Visual Basic"
+        }, 
+        {
+            "lang_popularity": [
+                3.58, 
+                5.89, 
+                8.34, 
+                9.24, 
+                9.24, 
+                9.09
+            ], 
+            "name": "PHP"
+        }, 
+        {
+            "lang_popularity": [
+                0.2, 
+                0.24, 
+                0.18, 
+                0, 
+                0, 
+                0
+            ], 
+            "name": "Scheme"
+        },
+        {
+            "lang_popularity": [
+                0.7493050799661601, 
+                0.7805097246236652, 
+                0.9671616749078418, 
+                1.2653282755988176, 
+                1.3160943866029473, 
+                1.8773201093245537
+            ], 
+            "name": "other"
+        }
+    ]
+}

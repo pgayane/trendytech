@@ -3,6 +3,7 @@ from collections import deque
 from settings import myauth
 from settings import zipfile
 from sqlalchemy import create_engine
+from sqlalchemy import func
 from sqlalchemy.orm import sessionmaker
 from repository import Repository
 import requests
@@ -10,6 +11,8 @@ import time
 import gzip
 import json
 import logging
+
+from collections import defaultdict
 
 
 #  ''' this function queries and returns github repos by languages used '''
@@ -129,16 +132,15 @@ def getAllRepos():
 def getLocally():
 
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.WARNING)
     file_handler = logging.FileHandler('mergehistory.log')
     logger.addHandler(file_handler)
-    
-   
     session = getSession()
-
+    line_number = 0
     with gzip.open(zipfile,"rb") as input_file:
 
         for line in input_file:
+            line_number += 1
             try:
                 user_repositories = json.loads(line)
 
@@ -150,20 +152,67 @@ def getLocally():
                         if is_success:
                             logger.info('%d %s %s' %(repo['id'] , year , repo['language']))
                         else:
-                            logger.warning(str(repo['id']) +' update was unsuccessful')
+                            logger.warning(str(line_number) + ':' + str(repo['id']) +' update was unsuccessful')
 
                     else:
                         print repo
                 logger.info('user repos updated')
                 session.commit()
                 file_handler.flush()
-                print 'commits and flush to log file'
             except:
-                logging.shutdown()
-                print "Failed to load:"
-                # print line
-                break
+                logger.error(str(line_number) + ':' + line)
+                
+    logging.shutdown()
 
+def exportToJSON():
+    session = getSession()
+    sum_per_year = session.query(Repository.creation_date, func.count(Repository.id)).\
+                            filter(Repository.main_lang is not None,\
+                            Repository.main_lang != '',\
+                            Repository.creation_date is not None,\
+                            Repository.creation_date != '2014',\
+                            Repository.creation_date != '2007').\
+                            group_by(Repository.creation_date).\
+                            order_by(Repository.creation_date).all()
+    
+    repos = session.query(Repository.main_lang, Repository.creation_date, \
+                    func.count(Repository.id)).filter(\
+                    Repository.main_lang is not None,\
+                    Repository.main_lang != '',\
+                    Repository.creation_date is not None,\
+                    Repository.creation_date != '2014',\
+                    Repository.creation_date != '2007').\
+                    group_by(Repository.main_lang, Repository.creation_date).\
+                    order_by(Repository.main_lang, Repository.creation_date).all()
+    
+    timeline_data = defaultdict((lambda:defaultdict(float)))
+
+    for (lang,year,count) in repos:
+        count_formatted = float(count*100)/float(sum_per_year[int(year) - 2008][1])
+
+        # don't round the count to have a correct sum for 'other' langs
+        if count_formatted < 0.1:
+            lang = 'other'
+        else:
+            count_formatted = round(count_formatted, 2)
+
+        
+        timeline_data[lang][year] += count_formatted
+      
+    # format the dictonary into array, as d3 cannot iterate over the dict
+    export_data = {'languages': []}
+
+    for lang in timeline_data:
+        lang_popularity = [0,0,0,0,0,0]
+        for year in timeline_data[lang]:
+            lang_popularity[int(year)-2008] = timeline_data[lang][year]
+        export_data['languages'].append({'name': lang, 'lang_popularity': lang_popularity})
+
+    # for t in timeline_data:
+    #     print t, timeline_data[t]
+
+    with open('timeline_data.json', 'w') as outfile:
+     json.dump(export_data, outfile, sort_keys = True, indent = 4, ensure_ascii=False)
 
 if __name__ == '__main__':
-    getLocally()
+    exportToJSON()
