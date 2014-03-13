@@ -11,6 +11,13 @@ class Repository(Base):
     languages_url = Column(String)
     creation_date = Column(Date)
     main_lang = Column(String)
+    username = Column(String)
+    size = Column(Integer)
+    stargazers_count = Column(Integer)
+    watchers_count = Column(Integer)
+    subscribers_count  = Column(Integer)
+    forks_count = Column(Integer)
+    open_issues_count = Column(Integer)
 
     def __repr__(self):
         return "<User(id='%s', full_name='%s', creation_date='%s', languages_url = '%s')>" % (
@@ -32,6 +39,24 @@ class Repository(Base):
 
             if 'main_lang' in kargs:
                 repo.main_lang = kargs['main_lang']
+
+            if 'size' in kargs:
+                repo.size = kargs['size']
+
+            if 'stargazers_count' in kargs:
+                repo.stargazers_count = kargs['stargazers_count']
+
+            if 'watchers_count' in kargs:
+                repo.watchers_count = kargs['watchers_count']
+
+            if 'subscribers_count' in kargs:
+                repo.subscribers_count = kargs['subscribers_count']
+
+            if 'forks_count' in kargs:
+                repo.forks_count = kargs['forks_count']
+
+            if 'open_issues_count' in kargs:
+                repo.open_issues_count = kargs['open_issues_count']
 
             session.add(repo)
             return True
