@@ -4,6 +4,7 @@ from settings import myauth
 from settings import zipfile
 from sqlalchemy import create_engine
 from sqlalchemy import func
+from sqlalchemy import distinct
 from sqlalchemy.orm import sessionmaker
 from repository import Repository
 import requests
@@ -11,9 +12,11 @@ import time
 import gzip
 import json
 import logging
-
+from counter import Counter
 from collections import defaultdict
 
+
+session = None
 
 #  ''' this function queries and returns github repos by languages used '''
 def getLanguages():
@@ -77,10 +80,11 @@ def printSizePerLanguage():
     statf.close()
 
 def getSession():
-    # TODO: don't create a session when one is already created
-    engine = create_engine('postgresql://pgayane:g@localhost:5433/githubDB')
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    global session
+    if session is None:
+        engine = create_engine('postgresql://pgayane:g@localhost:5433/githubDB')
+        Session = sessionmaker(bind=engine)
+        session = Session()
 
     return session
 
@@ -94,16 +98,9 @@ def getAllRepos():
     counter = 1
     print counter, l, p['since']
 
-    start_time = time.time()
+    counter = Counter(5000)
     while l > 0:
-        if counter % 5000 == 0:
-            delta = time.time() - start_time
-            if delta < 3660:
-                print 'sleep for %f' % (delta)
-                time.sleep(3660 - delta)
-            else:
-                print 'not sleeping as delta is %f' % (delta)
-            start_time = time.time()
+        counter.check_limit()
 
         for proj in result:
             if 'id' in proj:
@@ -119,8 +116,8 @@ def getAllRepos():
         while l == 0:
             result = requests.get('https://api.github.com/repositories', params=p, auth=myauth)
         l = len(result.json())
-        counter += 1
-        print counter, l, p['since']
+        counter.increment()
+        print counter.count, l, p['since']
 
         if l == 0:
             print result
@@ -165,18 +162,28 @@ def getLocally():
                 
     logging.shutdown()
 
-def get_extra_data(user_start_idx, user_end_idx):
+def get_extra_data():
     session = getSession()
 
-    usernames = session.query(Repository.username).group_by(Repository.username)
+    # usernames = session.query(Repository.username).group_by(Repository.username)
 
-    for i in range(user_start_idx, user_end_idx+1):
-        username = usernames[i] 
+    # temproary test on small amount of data
+    usernames = session.query(distinct(Repository.username)).group_by(Repository.username)
+                        .limit(10)
+
+    counter = Counter(5000)
+    for username in usernames:
+        print 'geting data for user: ', username
+        counter.check_limit()
+
         repos = get_repo_info_by_user(username)
+        
+        counter.increment()
                
 
 def get_user_repos(username):
     result = requests.get('https://api.github.com/users/%s/repos' %(username), auth=myauth).json()
+    print 'https://api.github.com/users/%s/repos' %(username)
     return result
 
 def get_repo_info_by_user(username):
@@ -198,12 +205,10 @@ def update_repo_info(repo):
     language = repo["language"]
     repo_id = repo["id"]
 
+    print '     : updating repo: ', repo_id
     success = Repository.update(session, repo_id, 
-        size = size, stargazers_count = star_ct, forks_count = fork_ct, open_issues_count = issue_ct
+        size = size, stargazers_count = star_ct, forks_count = fork_ct, open_issues_count = issue_ct,
         creation_date = create_at, main_lang = language)
-
-
-
 
 def exportToJSON():
     session = getSession()
@@ -256,4 +261,4 @@ def exportToJSON():
      json.dump(export_data, outfile, sort_keys = True, indent = 4, ensure_ascii=False)
 
 if __name__ == '__main__':
-    exportToJSON()
+    get_extra_data()    
