@@ -34,7 +34,7 @@ def getLanguages():
     for item in result['items']:
         lang_url = item['languages_url']
         print lang_url
-        r = requests.get(lang_url, params={}, auth=('pgayane', 'Gayan4ik'))
+        r = requests.get(lang_url, params={}, auth=myauth)
         proj_langs = r.json()
         for lang in proj_langs:
             if not (lang in languages):
@@ -77,6 +77,7 @@ def printSizePerLanguage():
     statf.close()
 
 def getSession():
+    # TODO: don't create a session when one is already created
     engine = create_engine('postgresql://pgayane:g@localhost:5433/githubDB')
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -163,6 +164,22 @@ def getLocally():
                 logger.error(str(line_number) + ':' + line)
                 
     logging.shutdown()
+
+def get_extra_data(user_start_idx, user_end_idx):
+    session = getSession()
+
+    usernames = session.query(Repository.username).group_by(Repository.username)
+
+    for i in range(user_start_idx, user_end_idx+1):
+        username = usernames[i] 
+        repos = get_user_repos(username)
+               
+
+def get_user_repos(username):
+    
+    result = requests.get('https://api.github.com/users/%s/repos' %(username), auth=myauth).json()
+    
+
 
 def exportToJSON():
     session = getSession()
