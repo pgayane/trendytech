@@ -172,13 +172,37 @@ def get_extra_data(user_start_idx, user_end_idx):
 
     for i in range(user_start_idx, user_end_idx+1):
         username = usernames[i] 
-        repos = get_user_repos(username)
+        repos = get_repo_info_by_user(username)
                
 
 def get_user_repos(username):
-    
     result = requests.get('https://api.github.com/users/%s/repos' %(username), auth=myauth).json()
-    
+    return result
+
+def get_repo_info_by_user(username):
+    session = getSession()
+    user_results = get_user_repos(username)
+    for repo in user_results:
+        update_repo_info(repo)
+    session.commit()
+
+def update_repo_info(repo):
+    #takes JSON object of a users repo and returns critical values for repo
+    size = repo["size"]
+    star_ct = repo["stargazers_count"]
+    #watch_ct = repo["watchers_count"]
+    fork_ct = repo["forks_count"]
+    issue_ct = repo["open_issues_count"]
+    create_at = repo["created_at"][:4]
+    update_at = repo["updated_at"]
+    language = repo["language"]
+    repo_id = repo["id"]
+
+    success = Repository.update(session, repo_id, 
+        size = size, stargazers_count = star_ct, forks_count = fork_ct, open_issues_count = issue_ct
+        creation_date = create_at, main_lang = language)
+
+
 
 
 def exportToJSON():
