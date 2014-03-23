@@ -2,12 +2,16 @@
 from collections import deque
 from settings import myauth
 from settings import zipfile
+from settings import client_id
+from settings import client_secret
 from sqlalchemy import create_engine
 from sqlalchemy import func
 from sqlalchemy import distinct
 from sqlalchemy.orm import sessionmaker
 from repository import Repository
 import requests
+from requests_oauthlib import OAuth2Session
+
 import time
 import gzip
 import json
@@ -162,54 +166,53 @@ def getLocally():
                 
     logging.shutdown()
 
-def get_extra_data():
+def get_extra_data(oauth):
     session = getSession()
 
     # usernames = session.query(Repository.username).group_by(Repository.username)
 
     # temproary test on small amount of data
-    usernames = session.query(distinct(Repository.username)).group_by(Repository.username)
-                        .limit(10)
+    usernames = session.query(distinct(Repository.username)).group_by(Repository.username).limit(1000)
 
     counter = Counter(5000)
     for username in usernames:
         print 'geting data for user: ', username
         counter.check_limit()
-
-        repos = get_repo_info_by_user(username)
-        
+        repos = get_repo_info_by_user(username, oauth)
         counter.increment()
                
+def get_user_repos(username, oauth):
 
-def get_user_repos(username):
-    result = requests.get('https://api.github.com/users/%s/repos' %(username), auth=myauth).json()
-    print 'https://api.github.com/users/%s/repos' %(username)
+    url = 'https://api.github.com/users/%s/repos' %(username)
+    result = oauth.get(url).json()
+
     return result
 
-def get_repo_info_by_user(username):
+def get_repo_info_by_user(username, oauth):
     session = getSession()
-    user_results = get_user_repos(username)
+    user_results = get_user_repos(username, oauth)
     for repo in user_results:
         update_repo_info(repo)
     session.commit()
 
 def update_repo_info(repo):
     #takes JSON object of a users repo and returns critical values for repo
-    size = repo["size"]
-    star_ct = repo["stargazers_count"]
-    #watch_ct = repo["watchers_count"]
-    fork_ct = repo["forks_count"]
-    issue_ct = repo["open_issues_count"]
-    create_at = repo["created_at"][:4]
-    update_at = repo["updated_at"]
-    language = repo["language"]
-    repo_id = repo["id"]
+    if 'size' in repo:
+        size = repo["size"]
+        star_ct = repo["stargazers_count"]
+        fork_ct = repo["forks_count"]
+        issue_ct = repo["open_issues_count"]
+        create_at = repo["created_at"][:4]
+        update_at = repo["updated_at"]
+        language = repo["language"]
+        repo_id = repo["id"]
 
-    print '     : updating repo: ', repo_id
-    success = Repository.update(session, repo_id, 
-        size = size, stargazers_count = star_ct, forks_count = fork_ct, open_issues_count = issue_ct,
-        creation_date = create_at, main_lang = language)
-
+        print '     : updating repo: ', repo_id
+        success = Repository.update(session, repo_id, 
+            size = size, stargazers_count = star_ct, forks_count = fork_ct, open_issues_count = issue_ct,
+            creation_date = create_at, main_lang = language)
+    else:
+        print repo
 def exportToJSON():
     session = getSession()
     sum_per_year = session.query(Repository.creation_date, func.count(Repository.id)).\
@@ -261,4 +264,5 @@ def exportToJSON():
      json.dump(export_data, outfile, sort_keys = True, indent = 4, ensure_ascii=False)
 
 if __name__ == '__main__':
-    get_extra_data()    
+    authorize()
+    # get_extra_data()    
