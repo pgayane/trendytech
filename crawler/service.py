@@ -2,6 +2,7 @@ from requests_oauthlib import OAuth2Session
 import settings
 import os
 
+from threading import Thread
 from flask import Flask, request, redirect, session, url_for
 from flask.json import jsonify
 from crawler import get_extra_data
@@ -31,6 +32,10 @@ def callback():
                                authorization_response=request.url)
 
     get_extra_data(github)
+
+
+    t = Thread(target = get_extra_data, args = (github))
+    t.start()
 
     return 'crawling in the process'
 
