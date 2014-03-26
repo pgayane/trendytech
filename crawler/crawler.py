@@ -1,7 +1,14 @@
 
 from collections import deque
+
+from settings import myauth
+from settings import zipfile
+from settings import client_id
+from settings import client_secret
+from settings import dbConfig
+
 from requests_oauthlib import OAuth2Session
-import settings
+
 from sqlalchemy import create_engine
 from sqlalchemy import func
 from sqlalchemy import distinct
@@ -84,7 +91,7 @@ def printSizePerLanguage():
 def getSession():
     global session
     if session is None:
-        engine = create_engine('postgresql://pgayane:g@localhost:5433/githubDB')
+        engine = create_engine(dbConfig)
         Session = sessionmaker(bind=engine)
         session = Session()
 

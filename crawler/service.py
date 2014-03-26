@@ -3,6 +3,7 @@ import settings
 import os
 from threading import Thread
 
+from threading import Thread
 from flask import Flask, request, redirect, session, url_for
 from flask.json import jsonify
 from crawler import get_extra_data
@@ -32,6 +33,10 @@ def callback():
                                authorization_response=request.url)
 
     t = Thread(target = get_extra_data, args = (github,))
+    t.start()
+
+
+    t = Thread(target = get_extra_data, args = (github))
     t.start()
 
     return 'crawling in the process'
