@@ -1,6 +1,7 @@
 from requests_oauthlib import OAuth2Session
 import settings
 import os
+from threading import Thread
 
 from threading import Thread
 from flask import Flask, request, redirect, session, url_for
@@ -31,7 +32,8 @@ def callback():
     token = github.fetch_token(settings.token_url, client_secret=settings.client_secret,
                                authorization_response=request.url)
 
-    get_extra_data(github)
+    t = Thread(target = get_extra_data, args = (github,))
+    t.start()
 
 
     t = Thread(target = get_extra_data, args = (github))

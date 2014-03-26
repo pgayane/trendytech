@@ -42,6 +42,7 @@ class Repository(Base):
 
             if 'size' in kargs:
                 repo.size = kargs['size']
+                
 
             if 'stargazers_count' in kargs:
                 repo.stargazers_count = kargs['stargazers_count']
