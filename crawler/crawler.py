@@ -1,9 +1,7 @@
 
 from collections import deque
-from settings import myauth
-from settings import zipfile
-from settings import client_id
-from settings import client_secret
+from requests_oauthlib import OAuth2Session
+import settings
 from sqlalchemy import create_engine
 from sqlalchemy import func
 from sqlalchemy import distinct
@@ -173,7 +171,6 @@ def get_extra_data(oauth):
 
     # temproary test on small amount of data
     usernames = session.query(distinct(Repository.username)).group_by(Repository.username).limit(1000)
-
     counter = Counter(5000)
     for username in usernames:
         print 'geting data for user: ', username
@@ -264,5 +261,4 @@ def exportToJSON():
      json.dump(export_data, outfile, sort_keys = True, indent = 4, ensure_ascii=False)
 
 if __name__ == '__main__':
-    authorize()
-    # get_extra_data()    
+    get_extra_data()    
