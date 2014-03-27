@@ -35,10 +35,6 @@ def callback():
     t = Thread(target = get_extra_data, args = (github,))
     t.start()
 
-
-    t = Thread(target = get_extra_data, args = (github))
-    t.start()
-
     return 'crawling in the process'
 
 
