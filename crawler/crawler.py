@@ -170,14 +170,25 @@ def get_extra_data(oauth):
     # usernames = session.query(Repository.username).group_by(Repository.username)
 
     # temproary test on small amount of data
-    usernames = session.query(distinct(Repository.username)).group_by(Repository.username).limit(1000)
-    counter = Counter(5000)
-    for username in usernames:
-        print 'geting data for user: ', username
-        counter.check_limit()
-        repos = get_repo_info_by_user(username, oauth)
-        counter.increment()
+    start = time.time()
+    usernames = session.query(Repository.username).group_by(Repository.username).order_by(Repository.username).limit(1000).all()
+    print 'usernames selected', time.time() - start
+
+    counter = Counter(12500)
+    while len(usernames) > 0:
+        for username in usernames:
+            # print 'geting data for user: ', username
+            counter.check_limit()
+            repos = get_repo_info_by_user(username, oauth)
+            counter.increment()
+        usernames = get_next_users(usernames[-1])
+        print 'usernames selected after ', usernames[-1]
                
+def get_next_users(lastusername):
+    usernames = session.query(Repository.username).filter(Repository.username > lastusername).group_by(Repository.username).order_by(Repository.username).limit(1000)
+    
+    return usernames.all()
+    
 def get_user_repos(username, oauth):
 
     url = 'https://api.github.com/users/%s/repos' %(username)
@@ -204,7 +215,7 @@ def update_repo_info(repo):
         language = repo["language"]
         repo_id = repo["id"]
 
-        print '     : updating repo: ', repo_id
+        # print '     : updating repo: ', repo_id
         success = Repository.update(session, repo_id, 
             size = size, stargazers_count = star_ct, forks_count = fork_ct, open_issues_count = issue_ct,
             creation_date = create_at, main_lang = language)
