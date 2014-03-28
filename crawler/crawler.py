@@ -171,14 +171,17 @@ def getLocally():
                 
     logging.shutdown()
 
-def get_extra_data(oauth):
+def get_extra_data(oauth, startname):
     session = getSession()
 
     # usernames = session.query(Repository.username).group_by(Repository.username)
 
     # temproary test on small amount of data
     start = time.time()
-    usernames = session.query(Repository.username).group_by(Repository.username).order_by(Repository.username).limit(1000).all()
+    if startname == '':
+        usernames = session.query(Repository.username).group_by(Repository.username).order_by(Repository.username).limit(1000).all()
+    else:
+        usernames = session.query(Repository.username).filter(Repository.username > startname).group_by(Repository.username).order_by(Repository.username).limit(1000).all()
     print 'usernames selected', time.time() - start
 
     counter = Counter(12500)
