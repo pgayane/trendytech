@@ -173,17 +173,23 @@ def getLocally():
 
 def get_extra_data(oauth):
     session = getSession()
+    for i in range(8):
+        num = 10 ** i
+        start = time.time()
+        usernames = session.query(Repository.username).group_by(Repository.username).limit(num).all()
+        end = time.time()
+        print "i: ", i, " delta: ", end-start
 
-    # usernames = session.query(Repository.username).group_by(Repository.username)
+    # usernames = session.query(Repository.username).group_by(Repository.username)  
 
     # temproary test on small amount of data
-    usernames = session.query(distinct(Repository.username)).group_by(Repository.username).limit(1000)
-    counter = Counter(5000)
-    for username in usernames:
-        print 'geting data for user: ', username
-        counter.check_limit()
-        repos = get_repo_info_by_user(username, oauth)
-        counter.increment()
+   # print (len(usernames))
+   # counter = Counter(5000)
+   # for username in usernames:
+   #     print 'geting data for user: ', username
+   #     counter.check_limit()
+   #     repos = get_repo_info_by_user(username, oauth)
+   #     counter.increment()
                
 def get_user_repos(username, oauth):
 
