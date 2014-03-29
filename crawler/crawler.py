@@ -216,8 +216,6 @@ def get_repo_info_by_user(username, oauth):
     for repo in user_results:
         update_repo_info(repo)
     session.commit()
-    print username
-    log_user(username)
 
 def update_repo_info(repo):
     #takes JSON object of a users repo and returns critical values for repo
