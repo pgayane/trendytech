@@ -186,7 +186,7 @@ def get_extra_data(oauth, startname):
         for username in usernames:
             # print 'geting data for user: ', username
             counter.check_limit()
-            repos = get_repo_info_by_user(username, oauth)
+            repos = get_repo_info_by_user(username[0], oauth)
             counter.increment()
         usernames = get_next_users(usernames[-1])
         print 'usernames selected after ', usernames[-1]
@@ -199,7 +199,14 @@ def get_next_users(lastusername):
 def get_user_repos(username, oauth):
 
     url = 'https://api.github.com/users/%s/repos' %(username)
-    result = oauth.get(url).json()
+    repo_list = oauth.get(url)
+    try:
+        result = repo_list.json()
+    except JSONDecodeError:
+        print 'JSON decode error'
+        print 'repo list that failed: %s' %(repo_list)
+        return []
+
 
     return result
 
@@ -209,16 +216,6 @@ def get_repo_info_by_user(username, oauth):
     for repo in user_results:
         update_repo_info(repo)
     session.commit()
-    log_user(username)
-
-def log_user(username):
-    with open('users.txt', 'w+') as users:
-        users.write(username)
-
-def get_last_username():
-    with open('users.txt', 'r') as users:
-        username = users.read()
-    return username
 
 def update_repo_info(repo):
     #takes JSON object of a users repo and returns critical values for repo
