@@ -174,9 +174,6 @@ def getLocally():
 def get_extra_data(oauth, startname):
     session = getSession()
 
-    # usernames = session.query(Repository.username).group_by(Repository.username)
-
-    # temproary test on small amount of data
     start = time.time()
     if startname == '':
         usernames = session.query(Repository.username).group_by(Repository.username).order_by(Repository.username).limit(1000).all()
@@ -212,6 +209,16 @@ def get_repo_info_by_user(username, oauth):
     for repo in user_results:
         update_repo_info(repo)
     session.commit()
+    log_user(username)
+
+def log_user(username):
+    with open('users.txt', 'w+') as users:
+        users.write(username)
+
+def get_last_username():
+    with open('users.txt', 'r') as users:
+        username = users.read()
+    return username
 
 def update_repo_info(repo):
     #takes JSON object of a users repo and returns critical values for repo

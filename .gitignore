@@ -39,3 +39,5 @@ nosetests.xml
 
 # temprorary files
 *~
+
+crawler/trying.py
