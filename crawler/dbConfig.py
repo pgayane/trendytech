@@ -19,22 +19,27 @@ def stop_DB(con):
 	if con:
 		con.close()
 
-def get_user_names():
-	global con 
+#def get_user_names():
+#	global con 
 
-	if (not con):
-		start_DB()
+#	if (not con):
+#		start_DB()
+#
+#	cur = con.cursor()
 
-	cur = con.cursor()
-
-	for i in range(8):
-		num = 10**i
-		start = time.time()
-		get_users = "SELECT username FROM repository GROUP BY username LIMIT " + str(num) + ";"
-		cur.execute(get_users)
-		userlist = cur.fetchall()
-		end = time.time()
-		print "i: ", i, " delta: ", end-start
+#	for i in range(8):
+#		num = 10**i
+#		start = time.time()
+#		get_users = "SELECT username FROM repository GROUP BY username LIMIT " + str(num) + ";"
+#		cur.execute(get_users)
+#		userlist = cur.fetchall()
+#		end = time.time()
+#		print "i: ", i, " delta: ", end-start
 
 
-get_user_names()
+#get_user_names()
+
+def get_last_user():
+global con
+get_last = "SELECT * FROM repository WHERE stargazers_count IS NOT NULL ORDER BY  "
+con.execute()

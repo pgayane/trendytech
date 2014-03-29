@@ -173,12 +173,12 @@ def getLocally():
 
 def get_extra_data(oauth, startname):
     session = getSession()
-    for i in range(8):
-        num = 10 ** i
-        start = time.time()
-        usernames = session.query(Repository.username).group_by(Repository.username).limit(num).all()
-        end = time.time()
-        print "i: ", i, " delta: ", end-start
+    #for i in range(8):
+    #    num = 10 ** i
+    #    start = time.time()
+    #    usernames = session.query(Repository.username).group_by(Repository.username).limit(num).all()
+    #    end = time.time()
+    #    print "i: ", i, " delta: ", end-start
 
     # usernames = session.query(Repository.username).group_by(Repository.username)  
 
@@ -199,7 +199,6 @@ def get_extra_data(oauth, startname):
             counter.increment()
         usernames = get_next_users(usernames[-1])
         print 'usernames selected after ', usernames[-1]
-
                
 def get_next_users(lastusername):
     usernames = session.query(Repository.username).filter(Repository.username > lastusername).group_by(Repository.username).order_by(Repository.username).limit(1000)
@@ -219,6 +218,16 @@ def get_repo_info_by_user(username, oauth):
     for repo in user_results:
         update_repo_info(repo)
     session.commit()
+    log_user(username)
+
+def log_user(username):
+    with open('users.txt', 'w+') as users:
+        users.write(username)
+
+def get_last_username():
+    with open('users.txt', 'r') as users:
+        username = users.read()
+    return username
 
 def update_repo_info(repo):
     #takes JSON object of a users repo and returns critical values for repo
