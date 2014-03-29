@@ -173,15 +173,6 @@ def getLocally():
 
 def get_extra_data(oauth, startname):
     session = getSession()
-    #for i in range(8):
-    #    num = 10 ** i
-    #    start = time.time()
-    #    usernames = session.query(Repository.username).group_by(Repository.username).limit(num).all()
-    #    end = time.time()
-    #    print "i: ", i, " delta: ", end-start
-
-    # usernames = session.query(Repository.username).group_by(Repository.username)  
-
 
     start = time.time()
     if startname == '':
